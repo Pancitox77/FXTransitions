@@ -1,0 +1,43 @@
+plugins {
+  	id 'java-library'
+}
+
+group = "git.pancitox77"
+version = "1.0.0"
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    // Use JUnit Jupiter for testing.
+    testImplementation libs.junit.jupiter
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // JavaFX
+    def javaFxVersion = '23.0.1'
+    def os = org.gradle.internal.os.OperatingSystem.current()
+    def system = os.isWindows() ? 'win' : os.isMacOsX() ? 'mac' : 'linux'
+
+    api "org.openjfx:javafx-base:$javaFxVersion:$system"
+    api "org.openjfx:javafx-controls:$javaFxVersion:$system"
+    api "org.openjfx:javafx-graphics:$javaFxVersion:$system"
+    api "org.openjfx:javafx-fxml:$javaFxVersion:$system"
+}
+
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    withSourcesJar()
+    withJavadocJar()
+    
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
